@@ -1,0 +1,137 @@
+<div
+  class="flex flex-col w-full p-3 gap-y-4 h-[calc(100%-5rem)] overflow-x-auto"
+>
+  <!-- Title -->
+  <div class="flex w-full justify-between">
+    <!-- Title -->
+    <div class="flex gap-x-2">
+      <app-header-label [caption]="'Receipt'" />
+
+      @if (store.error()) {
+      <app-error-label [message]="store.error()" />
+      } @if (store.isLoading()) {
+      <app-loading />
+      }
+    </div>
+
+    <app-close-icon-button (clicked)="close()" />
+  </div>
+
+  <div class="flex flex-col">
+    <div class="w-full flex justify-center">
+      <button
+        #printButton
+        class="px-3 py-1 text-white bg-green-500 text-sm w-32"
+        printTitle="receipt_{{ store.sale().location_name }}_{{
+          store.sale().location_transaction_id
+        }}"
+        printSectionId="print-section"
+        [useExistingCss]="true"
+        ngxPrint
+      >
+        Print
+      </button>
+    </div>
+
+    <div class="flex px-5 py-5 overflow-auto h-full">
+      <div
+        id="print-section"
+        class="justify-center px-5 py-10 mx-auto bg-white border border-gray-500 w-[275px] gap-y-2 flex flex-col"
+      >
+        <!-- Title -->
+        <div class="w-full flex flex-col items-center">
+          <span class="font-semibold text-lg">
+            {{ store.sale().location_name }}
+          </span>
+
+          <span class="font-semibold">Receipt</span>
+        </div>
+
+        <!-- Transaction No & Date-->
+        <div class="w-full flex justify-between">
+          <div class="flex flex-col">
+            <span class="text-sm font-semibold">Receipt No</span>
+            <span class="text-sm">{{
+              store.sale().location_transaction_id
+            }}</span>
+          </div>
+
+          <div class="flex flex-col items-end">
+            <span class="text-sm font-semibold">Date</span>
+            <span class="text-sm">{{
+              store.sale().sales_date | date : "dd-MMM-yyyy HH:mm"
+            }}</span>
+          </div>
+        </div>
+
+        <!-- Customer -->
+        <div class="w-full flex flex-col">
+          <span class="text-sm font-semibold">Customer</span>
+          <span class="text-sm">{{
+            store.sale().note || "Walk-in Customer"
+          }}</span>
+        </div>
+
+        <!-- Items -->
+        <div class="w-full flex flex-col">
+          <div class="w-full flex justify-between border-b border-gray-700">
+            <span class="text-sm font-semibold">Item</span>
+            <span class="text-sm font-semibold">Price</span>
+          </div>
+
+          @for (entry of store.sale().entries; track entry.id) {
+          <div class="w-full flex flex-col py-1">
+            <span class="text-sm font-semibold">{{
+              entry.inventory_name
+            }}</span>
+
+            <div class="flex justify-between">
+              <span class="text-sm"
+                >> {{ entry.quantity }} x
+                {{ entry.sales_price | number : "1.2-2" }}</span
+              >
+
+              <span class="text-sm">{{
+                entry.total_sales_price | number : "1.2-2"
+              }}</span>
+            </div>
+
+            @if (entry.comment) {
+            <span class="text-xs">{{ entry.comment }}</span>
+            }
+          </div>
+          }
+
+          <!-- Totals -->
+          <div class="w-full flex justify-between border-t border-gray-800">
+            <span class="text-sm font-semibold">Total</span>
+            <span class="text-sm font-semibold">{{
+              store.netAmount() | number : "1.2-2"
+            }}</span>
+          </div>
+
+          <!-- Tenders -->
+          @for (tender of store.sale().tenders; track tender.id) {
+          <div class="flex justify-between">
+            <span class="text-sm">{{ tender.tender_name }}</span>
+            <span class="text-sm">{{ tender.amount | number : "1.2-2" }}</span>
+          </div>
+          } @if (store.change() > 0) {
+          <div class="w-full flex justify-between">
+            <span class="text-sm font-semibold">Change</span>
+            <span class="text-sm font-semibold">{{
+              store.change() | number : "1.2-2"
+            }}</span>
+          </div>
+          }
+
+          <!-- Footer -->
+          <div class="w-full flex flex-col mt-2 text-center">
+            <span class="text-xs">Thank you for shopping with us</span>
+            <span class="text-xs">Please come again</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

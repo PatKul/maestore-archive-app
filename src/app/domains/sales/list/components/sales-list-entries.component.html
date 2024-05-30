@@ -1,0 +1,74 @@
+<table class="w-full text-sm table-auto bg-white">
+  <thead>
+    <tr class="text-sm font-semibold text-gray-600 border-b border-gray-400">
+      <th class="w-48 px-2 py-1 text-left">
+        Sales Date
+
+        <app-sort-icon-button
+          [name]="store.sorter().salesDate.name"
+          [order]="store.sorter().salesDate.order"
+          (clicked)="toggleSort($event)"
+        />
+      </th>
+      <th class="w-32 px-2 py-1 text-left">
+        Sales #
+
+        <app-sort-icon-button
+          [name]="store.sorter().locationSalesNumber.name"
+          [order]="store.sorter().locationSalesNumber.order"
+          (clicked)="toggleSort($event)"
+        />
+      </th>
+      <th class="px-2 py-1 text-left">Location</th>
+      <th class="px-2 py-1 text-left">Note</th>
+      <th class="px-2 py-1 text-left w-28">Net Amount</th>
+      <th class="px-2 py-1 text-left w-28">
+        Paid
+
+        <app-sort-icon-button
+          [name]="store.sorter().amountPaid.name"
+          [order]="store.sorter().amountPaid.order"
+          (clicked)="toggleSort($event)"
+        />
+      </th>
+
+      <th class="w-20 px-2 py-1">Action</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    @for (sale of store.list(); track sale.id) {
+    <tr class="border-b border-gray-300 even:bg-gray-100 hover:text-blue-600">
+      <td class="px-2 py-1 text-left cursor-pointer">
+        {{ sale.sales_date | date : "dd-MMM-yyyy HH:mm:ss" }}
+      </td>
+      <td class="px-2 py-1 text-left cursor-pointer">
+        {{ sale.location_transaction_id }}
+      </td>
+      <td class="px-2 py-1 text-left cursor-pointer">
+        {{ sale.location_name }}
+      </td>
+      <td class="px-2 py-1 text-left cursor-pointer">
+        {{ sale.note }}
+      </td>
+      <td class="px-2 py-1 text-left cursor-pointer">
+        {{ sale.net_amount | number : "1.2-2" }}
+      </td>
+      <td class="px-2 py-1 text-left cursor-pointer">
+        {{ sale.amount_paid | number : "1.2-2" }}
+      </td>
+      <td class="px-2 py-1 text-center">
+        <app-print-icon-button (clicked)="print(sale.id)" />
+      </td>
+    </tr>
+
+    } @empty {
+
+    <tr class="border-b border-gray-300">
+      <td class="py-1 text-center" colspan="8">
+        <span class="text-sm text-gray-600">No records found</span>
+      </td>
+    </tr>
+    }
+  </tbody>
+</table>

@@ -1,0 +1,36 @@
+@if (dropdownVisible()) {
+<app-modal-dark-overlay (clicked)="toggleDropdown()" />
+}
+
+<div class="right-0 block md:inline-block">
+  <app-filter-mark-button (clicked)="toggleDropdown()" />
+
+  <!-- Dropdown List -->
+  @if (dropdownVisible()) {
+  <div
+    class="absolute z-50 mt-1 text-sm text-gray-600 origin-top-right bg-white border border-gray-400 shadow-md right-6 min-w-36"
+  >
+    @for (entry of list(); track $index) {
+    <div class="block bg-white border-b border-gray-300">
+      <a
+        class="block px-2 py-1 cursor-pointer hover:bg-blue-200"
+        (click)="select(entry.id)"
+      >
+        <div class="flex items-center gap-x-2">
+          <span class="text-sm"> {{ entry.name }}</span>
+        </div>
+      </a>
+    </div>
+    }
+  </div>
+  }
+</div>
+
+<!-- Templates here -->
+<ng-template #separator>
+  <hr style="margin: 0px" />
+</ng-template>
+
+<ng-template #closeDropdownButton>
+  <i class="fa fa-times fs-15 w3-text-red"></i>
+</ng-template>

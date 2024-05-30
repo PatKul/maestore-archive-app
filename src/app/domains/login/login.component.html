@@ -1,0 +1,46 @@
+<div
+  class="flex flex-col justify-center items-center px-6 lg:px-8 h-screen pb-24 bg-gray-100"
+>
+  <div class="flex flex-col w-64 gap-y-3">
+    <app-login-header />
+
+    <div class="flex flex-col gap-y-2">
+      <!-- Username -->
+      <app-text-box
+        class="w-full"
+        [placeholder]="'Username'"
+        (onChange)="username.set($event)"
+      />
+
+      <!-- Password  -->
+      <input
+        #passwordInputBox
+        type="password"
+        class="border border-gray-400 px-3 py-1 text-sm rounded-sm focus:border-white focus:outline-none focus:ring-1 focus:ring-blue-600"
+        placeholder="Password"
+        (keyup)="passwordKeyup($event)"
+      />
+
+      @if (sessionStore.error()) {
+      <span class="text-sm font-semibold text-orange-500">{{
+        sessionStore.error()
+      }}</span>
+      }
+    </div>
+
+    <app-primary-button class="w-full" (clicked)="login()">
+      Login
+    </app-primary-button>
+
+    <div class="w-full flex justify-center items-center">
+      <span class="text-xs text-gray-600">
+        Developed by
+        <a href="https://www.wave2systems.com" class="text-xs text-blue-600"
+          >Wave2 Systems</a
+        >
+        &nbsp;|&nbsp;
+        <span>&copy; 2024</span>
+      </span>
+    </div>
+  </div>
+</div>

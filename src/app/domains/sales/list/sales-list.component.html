@@ -1,0 +1,99 @@
+<div
+  class="w-full flex flex-col px-2 gap-y-1 h-[calc(100%-5rem)] overflow-y-auto overflow-x-hidden"
+>
+  <!-- Title -->
+  <app-header-label [caption]="'Sales'" />
+
+  <!-- -->
+  <div class="flex justify-between">
+    <div class="flex gap-x-2">
+      <div class="flex gap-x-1">
+        <app-dropdown-button
+          [list]="store.searchFields()"
+          [selectedKey]="store.searchField()"
+          (selected)="store.setSearchField($event)"
+        />
+
+        <input
+          type="text"
+          class="px-3 border border-gray-300 bg-white w-64 text-sm focus:outline-none focus:border-white focus:ring-1 focus:ring-blue-600 rounded-sm"
+          placeholder="Search ...."
+          (input)="search($event)"
+        />
+      </div>
+
+      <div class="flex flex-row gap-x-2 items-center">
+        <input
+          type="date"
+          class="border border-gray-300 px-3 py-1 text-sm rounded-sm focus:border-white focus:outline-none focus:ring-1 focus:ring-blue-600"
+          placeholder="From"
+          [ngModel]="store.startDateStr()"
+          (ngModelChange)="store.setStartDate($event)"
+        />
+
+        <span class="text-gray-600 cursor-pointer"> to </span>
+
+        <input
+          type="date"
+          class="border border-gray-300 px-3 py-1 text-sm rounded-sm focus:border-white focus:outline-none focus:ring-1 focus:ring-blue-600"
+          placeholder="To"
+          [ngModel]="store.endDateStr()"
+          (ngModelChange)="store.setEndDate($event)"
+        />
+      </div>
+
+      <app-primary-button (clicked)="store.fetch()">
+        Search
+      </app-primary-button>
+    </div>
+
+    <div class="flex items-center gap-x-2">
+      <app-filter-button
+        [list]="store.locations()"
+        (selected)="setLocationId($event)"
+      />
+    </div>
+  </div>
+
+  <!-- Record count-->
+  <div class="w-full flex gap-x-2">
+    <div class="flex gap-x-1">
+      <span class="font-semibold text-sm">Record:</span>
+
+      <span class="text-sm"
+        >{{ store.currentCount() }} of {{ store.totalCount() }}</span
+      >
+    </div>
+
+    <div class="flex gap-x-1 items-center">
+      <div class="rounded-lg bg-orange-500 text-white px-2 flex items-center">
+        <span class="text-xs">{{ store.locationName() }}</span>
+      </div>
+    </div>
+
+    @if (store.error()) {
+    <app-error-label [message]="store.error()" />
+    } @if (store.isLoading()) {
+    <app-loading />
+    }
+  </div>
+
+  <!-- Table -->
+  <div
+    class="flex flex-col border border-gray-300 bg-white overflow-y-auto"
+    [ngClass]="{
+      'h-[calc(100%-8rem)]': store.hasMoreRecords(),
+      'h-[calc(100%-5rem)]': !store.hasMoreRecords()
+    }"
+  >
+    <app-sales-list-entries />
+  </div>
+
+  <div class="w-full flex justify-center">
+    @if (store.hasMoreRecords()) {
+    <app-primary-button (clicked)="store.loadMore()"
+      >Load More</app-primary-button
+    >
+    }
+  </div>
+</div>

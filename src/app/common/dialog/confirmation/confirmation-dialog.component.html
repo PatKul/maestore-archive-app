@@ -1,0 +1,71 @@
+@if (_isVisible) {
+<div
+  class="fixed top-0 left-0 z-50 h-screen w-screen flex items-center justify-center"
+>
+  <ui-modal-dark-overlay />
+
+  <div
+    class="flex flex-col p-3 border border-gray-300 bg-white w-96 z-50 rounded-md"
+  >
+    <div class="flex flex-col items-center">
+      <!-- Icon -->
+      <div class="p-2 text-yellow-400">
+        <svg
+          class="w-10 h-10"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+          />
+        </svg>
+      </div>
+
+      <!-- Caption -->
+      <span class="font-semibold text-gray-500 text-md">
+        {{ params().message }}
+      </span>
+    </div>
+
+    <div class="flex justify-center mt-8">
+      <!-- Yes Button-->
+      <button
+        class="flex items-center justify-center w-20 px-2 py-1 mr-1 text-sm text-white bg-green-600 rounded-sm hover:bg-green-700"
+        (click)="yes()"
+      >
+        <div class="flex gap-x-1">
+          <svg
+            class="w-4 h-4"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M5 13l4 4L19 7"
+            />
+          </svg>
+        </div>
+
+        <span>Yes</span>
+      </button>
+
+      <!-- No Button-->
+      <button
+        class="flex justify-center w-12 px-2 py-1 text-sm text-gray-500 bg-gray-200 rounded-sm hover:bg-gray-300"
+        (click)="no()"
+      >
+        <span>No</span>
+      </button>
+    </div>
+  </div>
+</div>
+}

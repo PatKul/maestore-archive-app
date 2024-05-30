@@ -1,0 +1,26 @@
+@if (dropdownVisible()) {
+<app-modal-dark-overlay (clicked)="toggleDropdown()" />
+}
+
+<div class="right-0 block md:inline-block">
+  <app-user-icon-button (clicked)="toggleDropdown()" />
+
+  <!-- Dropdown List -->
+  @if (dropdownVisible()) {
+  <div
+    class="absolute z-50 mt-1 text-sm text-gray-600 origin-top-right bg-white border border-gray-400 shadow-md right-6 w-36"
+  >
+    <div
+      class="px-3 text-sm w-full py-1 border-b border-gray-400 hover:bg-blue-200"
+    >
+      Your profile
+    </div>
+    <div
+      class="px-3 text-sm w-full py-1 hover:bg-blue-200 cursor-pointer"
+      (click)="logout()"
+    >
+      Logout
+    </div>
+  </div>
+  }
+</div>
